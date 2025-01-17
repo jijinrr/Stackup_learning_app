@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "996421168796",
+    "project_id": "stackup-64824",
+    "storage_bucket": "stackup-64824.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996421168796:android:34313e038c400543c2c759",
+        "android_client_info": {
+          "package_name": "com.example.stackup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAabx_BTnz9N0VVI23OX8BnJWpn4jMbq-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
