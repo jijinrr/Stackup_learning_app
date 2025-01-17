@@ -1,15 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:stackup/View/home/home_screen.dart';
-import 'package:stackup/View/login_screen/login_screen.dart';
 import 'package:stackup/controller/auth_controller.dart';
+import 'package:stackup/routes/app_routes.dart';
 import 'package:stackup/utils/controller_initializer.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   Get.put(AuthController()); // Initialize AuthController
+  FlutterNativeSplash.remove();
   runApp(MyApp());
 }
 
@@ -20,18 +22,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialBinding: StoreBinding(),
+      initialRoute: RouteNames.splashScreen,
       debugShowCheckedModeBanner: false,
       title: 'stackup',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: '/login',
-      getPages: [
-        GetPage(name: '/login', page: () => LoginScreen()),
-        GetPage(name: '/register', page: () => RegisterScreen()),
-        GetPage(name: '/home', page: () => HomeScreen()),
-      ],
+      getPages: AppRoutes.pages,
     );
   }
 }

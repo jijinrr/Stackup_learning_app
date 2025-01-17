@@ -2,25 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stackup/View/home/controller/home_controller.dart';
+import 'package:stackup/View/home/widgets/user_location_checkin_widgetsd.dart';
 import 'package:stackup/controller/auth_controller.dart';
-
-class Course {
-  final String title;
-  final String description;
-  final String imageUrl;
-  final int lessonsCount;
-  final double progress;
-
-  Course({
-    required this.title,
-    required this.description,
-    required this.imageUrl,
-    required this.lessonsCount,
-    required this.progress,
-  });
-}
-
-// controllers/home_controller.dart
 
 class HomeScreen extends GetView<HomeController> {
   final AuthController authController = Get.find<AuthController>();
@@ -34,8 +17,14 @@ class HomeScreen extends GetView<HomeController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Expanded(child: UserLocationScreen()),
+
               _buildHeader(),
               _buildSearchBar(),
+              UserLocationScreen(
+                allowedIpAddress: '192.168.1.8',
+              ),
+
               _buildContinueLearning(),
               _buildPopularCourses(),
               _buildCategories(),
@@ -47,6 +36,8 @@ class HomeScreen extends GetView<HomeController> {
   }
 
   Widget _buildHeader() {
+    final HomeController homeController = Get.find<HomeController>();
+
     return Container(
       padding: const EdgeInsets.all(20),
       child: Row(
@@ -56,7 +47,7 @@ class HomeScreen extends GetView<HomeController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Hello,',
+                'Hello, ${homeController.getGreeting()}',
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 16,
@@ -327,10 +318,18 @@ class HomeScreen extends GetView<HomeController> {
   }
 }
 
-// Initialize controllers in your app's bindings
-class HomeBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.put(HomeController());
-  }
+class Course {
+  final String title;
+  final String description;
+  final String imageUrl;
+  final int lessonsCount;
+  final double progress;
+
+  Course({
+    required this.title,
+    required this.description,
+    required this.imageUrl,
+    required this.lessonsCount,
+    required this.progress,
+  });
 }
