@@ -10,6 +10,6 @@ class StoreBinding implements Bindings {
   void dependencies() {
     Get.lazyPut(() => AuthController(), fenix: true);
     Get.lazyPut(() => HomeController(), fenix: true);
-    Get.lazyPut(() => UserLocationController('192.168.1.8'), fenix: true);
+    Get.lazyPut(() => UserLocationController('192.168.29.175'), fenix: true);
   }
 }

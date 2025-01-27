@@ -1,30 +1,36 @@
 // models/course.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:get/get.dart';
+import 'package:remixicon/remixicon.dart';
+import 'package:stackup/View/drawer_screen.dart';
 import 'package:stackup/View/home/controller/home_controller.dart';
 import 'package:stackup/View/home/widgets/user_location_checkin_widgetsd.dart';
 import 'package:stackup/controller/auth_controller.dart';
+import 'package:stackup/helper/my_colors.dart';
 
 class HomeScreen extends GetView<HomeController> {
   final AuthController authController = Get.find<AuthController>();
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  HomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey, // Assign the GlobalKey to the Scaffold
       backgroundColor: Colors.grey[100],
+      drawer: Drawer(
+        child: DrawerScreen(),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Expanded(child: UserLocationScreen()),
-
               _buildHeader(),
               _buildSearchBar(),
               UserLocationScreen(
-                allowedIpAddress: '192.168.1.8',
+                allowedIpAddress: '192.168.1.9',
               ),
-
               _buildContinueLearning(),
               _buildPopularCourses(),
               _buildCategories(),
@@ -39,10 +45,17 @@ class HomeScreen extends GetView<HomeController> {
     final HomeController homeController = Get.find<HomeController>();
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          IconButton(
+            onPressed: () {
+              // Use the key to open the drawer
+              _scaffoldKey.currentState?.openDrawer();
+            },
+            icon: Icon(TablerIcons.menu_deep),
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -62,20 +75,24 @@ class HomeScreen extends GetView<HomeController> {
                   )),
             ],
           ),
+          Spacer(),
           Row(
             children: [
               IconButton(
-                icon: const Icon(Icons.notifications_outlined),
+                icon: Icon(
+                  Remix.notification_2_fill,
+                  color: MyColors.red,
+                ),
                 onPressed: () {},
               ),
-              GestureDetector(
-                onTap: () => authController.signOut(),
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.deepPurple[100],
-                  child: const Icon(Icons.person_outline),
-                ),
-              ),
+              // GestureDetector(
+              //   onTap: () => authController.signOut(),
+              //   child: CircleAvatar(
+              //     radius: 20,
+              //     backgroundColor: MyColors.white,
+              //     child: const Icon(Icons.person_outline),
+              //   ),
+              // ),
             ],
           ),
         ],

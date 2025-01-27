@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:stackup/View/home/home_screen.dart';
 import 'package:stackup/View/login_screen/login_screen.dart';
+import 'package:stackup/View/profile_screen/profile_screen.dart';
 import 'package:stackup/View/sign_up_screen/sign_up_screen.dart';
 import 'package:stackup/View/splash_screen/splash_screen.dart';
+import 'package:stackup/View/students_dashboard.dart/students_dashboard.dart';
 
 class AppRoutes {
   // pages corresponding to routnames
@@ -17,6 +19,8 @@ class AppRoutes {
     ),
     GetPage(name: RouteNames.signUpScreen, page: () => SignUpScreen()),
     GetPage(name: RouteNames.splashScreen, page: () => SplashScreen()),
+    GetPage(name: RouteNames.profileScreen, page: () => ProfileScreen()),
+    GetPage(name: RouteNames.studentDashboard, page: () => StudentDashboard()),
   ];
 }
 
@@ -26,4 +30,6 @@ class RouteNames {
   static const loginScreen = "/login_screen";
   static const splashScreen = "/splash_screen";
   static const signUpScreen = "/signup_screen";
+  static const profileScreen = "/profile_screen";
+  static const studentDashboard = "/student_dashboard";
 }
