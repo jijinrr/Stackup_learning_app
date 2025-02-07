@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:stackup/View/edit_profile/edit_profile_screen.dart';
 import 'package:stackup/helper/my_colors.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -26,6 +28,14 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildSliverAppBar() {
     return SliverAppBar(
+      leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: MyColors.white,
+          )),
       expandedHeight: 220,
       pinned: true,
       stretch: true,
@@ -165,7 +175,9 @@ class ProfileScreen extends StatelessWidget {
         children: [
           Expanded(
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.to(EditProfileScreen());
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: MyColors.red,
                 padding: const EdgeInsets.symmetric(vertical: 12),

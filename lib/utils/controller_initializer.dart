@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:stackup/View/edit_profile/controller/edit_profile_controller.dart';
 import 'package:stackup/View/home/controller/home_controller.dart';
 import 'package:stackup/controller/auth_controller.dart';
 import 'package:stackup/controller/user_location_controller.dart';
@@ -10,6 +11,8 @@ class StoreBinding implements Bindings {
   void dependencies() {
     Get.lazyPut(() => AuthController(), fenix: true);
     Get.lazyPut(() => HomeController(), fenix: true);
+    Get.lazyPut(() => ProfileController(), fenix: true);
+
     Get.lazyPut(() => UserLocationController('192.168.29.175'), fenix: true);
   }
 }

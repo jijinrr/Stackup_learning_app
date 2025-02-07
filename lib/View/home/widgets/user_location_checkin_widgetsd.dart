@@ -27,7 +27,7 @@ class UserLocationScreen extends StatelessWidget {
               children: [
                 Text(
                   'Have a productive day!',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                 ),
                 Obx(() => Text(
                     'Current IP: ${controller.currentIp.value.isEmpty ? 'Unknown' : controller.currentIp.value}',
