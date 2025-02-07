@@ -9,9 +9,11 @@ import 'package:stackup/View/home/widgets/user_location_checkin_widgetsd.dart';
 import 'package:stackup/controller/auth_controller.dart';
 import 'package:stackup/helper/my_colors.dart';
 
-class HomeScreen extends GetView<HomeController> {
+class HomeScreen extends StatelessWidget {
   final AuthController authController = Get.find<AuthController>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final HomeController homeController = Get.find<HomeController>();
+
   HomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class HomeScreen extends GetView<HomeController> {
       drawer: Drawer(
         child: DrawerScreen(),
       ),
+
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -45,9 +48,11 @@ class HomeScreen extends GetView<HomeController> {
     final HomeController homeController = Get.find<HomeController>();
 
     return Container(
+      // color: MyColors.green,
       padding: const EdgeInsets.all(12),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           IconButton(
             onPressed: () {
@@ -67,7 +72,7 @@ class HomeScreen extends GetView<HomeController> {
                 ),
               ),
               Obx(() => Text(
-                    controller.username.value,
+                    homeController.username.value,
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -140,9 +145,9 @@ class HomeScreen extends GetView<HomeController> {
             child: Obx(() => ListView.builder(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  itemCount: controller.courses.length,
+                  itemCount: homeController.courses.length,
                   itemBuilder: (context, index) {
-                    final course = controller.courses[index];
+                    final course = homeController.courses[index];
                     return Container(
                       width: 280,
                       margin: const EdgeInsets.symmetric(horizontal: 5),
@@ -216,9 +221,9 @@ class HomeScreen extends GetView<HomeController> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                itemCount: controller.courses.length,
+                itemCount: homeController.courses.length,
                 itemBuilder: (context, index) {
-                  final course = controller.courses[index];
+                  final course = homeController.courses[index];
                   return Container(
                     margin: const EdgeInsets.only(bottom: 15),
                     padding: const EdgeInsets.all(15),

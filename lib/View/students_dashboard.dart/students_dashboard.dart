@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:get/get.dart';
 import 'package:stackup/helper/my_colors.dart';
 
 class StudentDashboard extends StatelessWidget {
@@ -55,7 +56,7 @@ class StudentDashboard extends StatelessWidget {
             ),
           ),
         ),
-        title: const Text('Student Dashboard'),
+        // title: const Text('Student Dashboard'),
       ),
       actions: [
         IconButton(
@@ -68,10 +69,19 @@ class StudentDashboard extends StatelessWidget {
         ),
         const SizedBox(width: 8),
       ],
+      leading: IconButton(
+          onPressed: () {
+            // Get.toNamed(RouteNames.homeScreen);
+            Get.back();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: MyColors.white,
+          )),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(50),
         child: Container(
-          height: 50,
+          height: 80,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

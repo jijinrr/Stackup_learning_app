@@ -11,7 +11,7 @@ class SplashController extends GetxController {
 
   void _navigateToNextScreen() async {
     // Add a 3-second delay
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(milliseconds: 2500));
 
     // Check user's logged-in status
     bool isLoggedIn = _checkUserLoggedIn();

@@ -26,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildSliverAppBar() {
     return SliverAppBar(
-      expandedHeight: 300,
+      expandedHeight: 220,
       pinned: true,
       stretch: true,
       flexibleSpace: FlexibleSpaceBar(

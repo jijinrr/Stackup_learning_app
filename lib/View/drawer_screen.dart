@@ -10,6 +10,10 @@ class DrawerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void closeDrawer() {
+      Get.back();
+    }
+
     return Drawer(
       child: Container(
         decoration: BoxDecoration(
@@ -48,7 +52,10 @@ class DrawerScreen extends StatelessWidget {
                     context: context,
                     icon: TablerIcons.chart_bar,
                     title: 'Dashboard',
-                    onTap: () => Get.toNamed(RouteNames.studentDashboard),
+                    onTap: () {
+                      closeDrawer();
+                      Get.toNamed(RouteNames.studentDashboard);
+                    },
                   ),
                   _buildAnimatedDrawerItem(
                     context: context,
@@ -68,7 +75,10 @@ class DrawerScreen extends StatelessWidget {
                     context: context,
                     icon: Icons.person_rounded,
                     title: 'Profile',
-                    onTap: () => Get.toNamed(RouteNames.profileScreen),
+                    onTap: () {
+                      closeDrawer();
+                      Get.toNamed(RouteNames.profileScreen);
+                    },
                   ),
                   _buildAnimatedDrawerItem(
                     context: context,
