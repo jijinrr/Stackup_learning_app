@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:get/get.dart';
 import 'package:stackup/controller/auth_controller.dart';
+import 'package:stackup/controller/users_controller.dart';
 import 'package:stackup/helper/my_colors.dart';
 import 'package:stackup/routes/app_routes.dart';
 
@@ -53,6 +54,10 @@ class DrawerScreen extends StatelessWidget {
                     icon: TablerIcons.chart_bar,
                     title: 'Dashboard',
                     onTap: () {
+                      final UsersController usersController =
+                          Get.find<UsersController>();
+                      usersController.fetchusers();
+
                       closeDrawer();
                       Get.toNamed(RouteNames.studentDashboard);
                     },

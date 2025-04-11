@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:stackup/controller/auth_controller.dart';
+import 'package:stackup/dio_interceptor/dio_interceptor.dart';
 import 'package:stackup/routes/app_routes.dart';
 import 'package:stackup/utils/controller_initializer.dart';
+import 'package:stackup/utils/sharedpreference.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -12,6 +14,8 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   Get.put(AuthController()); // Initialize AuthController
   FlutterNativeSplash.remove();
+  await SharedPrefs.init();
+  ApiClient();
   runApp(MyApp());
 }
 

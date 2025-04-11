@@ -11,22 +11,19 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          _buildSliverAppBar(),
+          buildSliverAppBar(), // Uncommented and using the defined method name
+          _buildProfileStats(),
+          _buildActionButtons(),
           SliverToBoxAdapter(
-            child: Column(
-              children: [
-                _buildProfileStats(),
-                _buildActionButtons(),
-                _buildProfileSections(),
-              ],
-            ),
+            // Wrap _buildProfileSections in SliverToBoxAdapter
+            child: _buildProfileSections(),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSliverAppBar() {
+  Widget buildSliverAppBar() {
     return SliverAppBar(
       leading: IconButton(
           onPressed: () {
@@ -123,17 +120,20 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildProfileStats() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildStatItem('Courses', '12'),
-          _buildDivider(),
-          _buildStatItem('Following', '256'),
-          _buildDivider(),
-          _buildStatItem('Followers', '1.2K'),
-        ],
+    return SliverToBoxAdapter(
+      // Wrap in SliverToBoxAdapter since it contains a Row (RenderBox)
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildStatItem('Courses', '12'),
+            _buildDivider(),
+            _buildStatItem('Following', '256'),
+            _buildDivider(),
+            _buildStatItem('Followers', '1.2K'),
+          ],
+        ),
       ),
     );
   }
@@ -169,44 +169,47 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildActionButtons() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        children: [
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () {
-                Get.to(EditProfileScreen());
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: MyColors.red,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+    return SliverToBoxAdapter(
+      // Wrap in SliverToBoxAdapter since it contains a Row (RenderBox)
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  Get.to(() => EditProfileScreen());
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: MyColors.red,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  'Edit Profile',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-              child: const Text(
-                'Edit Profile',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+            ),
+            const SizedBox(width: 12),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.share_rounded),
+                color: Colors.grey[800],
               ),
             ),
-          ),
-          const SizedBox(width: 12),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.share_rounded),
-              color: Colors.grey[800],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

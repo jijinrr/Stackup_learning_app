@@ -7,97 +7,116 @@ import 'package:stackup/View/drawer_screen.dart';
 import 'package:stackup/View/home/controller/home_controller.dart';
 import 'package:stackup/View/home/widgets/user_location_checkin_widgetsd.dart';
 import 'package:stackup/controller/auth_controller.dart';
+import 'package:stackup/controller/user_info_controller.dart';
 import 'package:stackup/helper/my_colors.dart';
+import 'dart:math' as math;
 
 class HomeScreen extends StatelessWidget {
   final AuthController authController = Get.find<AuthController>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final HomeController homeController = Get.find<HomeController>();
+  final UserInfoController userInfoController = Get.find<UserInfoController>();
 
   HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
+    var userInfo = userInfoController.userInfoModel.value.users;
     return Scaffold(
-      key: _scaffoldKey, // Assign the GlobalKey to the Scaffold
+      key: _scaffoldKey,
       backgroundColor: Colors.grey[100],
       drawer: Drawer(
         child: DrawerScreen(),
       ),
-
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              _buildSearchBar(),
-              UserLocationScreen(
-                allowedIpAddress: '192.168.1.9',
-              ),
-              _buildContinueLearning(),
-              _buildPopularCourses(),
-              _buildCategories(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
-    final HomeController homeController = Get.find<HomeController>();
-
-    return Container(
-      // color: MyColors.green,
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: Stack(
         children: [
-          IconButton(
-            onPressed: () {
-              // Use the key to open the drawer
-              _scaffoldKey.currentState?.openDrawer();
-            },
-            icon: Icon(TablerIcons.menu_deep),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Hello, ${homeController.getGreeting()}',
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 16,
+          CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                floating: true,
+                pinned: true,
+                expandedHeight: 100.0,
+                backgroundColor: MyColors.red,
+                elevation: 0,
+                leading: IconButton(
+                  onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+                  icon: Icon(TablerIcons.menu_deep, color: Colors.white),
                 ),
-              ),
-              Obx(() => Text(
-                    homeController.username.value,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                actions: [
+                  IconButton(
+                    icon: Icon(
+                      Remix.notification_2_fill,
+                      color: MyColors.white,
                     ),
-                  )),
-            ],
-          ),
-          Spacer(),
-          Row(
-            children: [
-              IconButton(
-                icon: Icon(
-                  Remix.notification_2_fill,
-                  color: MyColors.red,
+                    onPressed: () {},
+                  ),
+                ],
+                flexibleSpace: FlexibleSpaceBar(
+                  expandedTitleScale: 1.1,
+                  titlePadding:
+                      const EdgeInsets.symmetric(horizontal: 60, vertical: 16),
+                  title: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${homeController.getGreeting()}, ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        userInfo?.firstName ?? '',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.rotationY(math.pi),
+                        child: const Text(
+                          '\u{1F44B}',
+                          style: TextStyle(fontSize: 30),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                onPressed: () {},
               ),
-              // GestureDetector(
-              //   onTap: () => authController.signOut(),
-              //   child: CircleAvatar(
-              //     radius: 20,
-              //     backgroundColor: MyColors.white,
-              //     child: const Icon(Icons.person_outline),
-              //   ),
-              // ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search courses...',
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: UserLocationScreen(
+                  allowedIpAddress: '192.168.72.107',
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: _buildContinueLearning(),
+              ),
+              SliverToBoxAdapter(
+                child: _buildPopularCourses(),
+              ),
+              SliverToBoxAdapter(
+                child: _buildCategories(),
+              ),
             ],
           ),
         ],
@@ -105,7 +124,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSearchBar() {
+  Widget buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextField(

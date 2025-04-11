@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
+import 'package:stackup/controller/users_controller.dart';
 import 'package:stackup/helper/my_colors.dart';
 
 class StudentDashboard extends StatelessWidget {
@@ -31,11 +32,11 @@ class StudentDashboard extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: MyColors.red,
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      //   backgroundColor: MyColors.red,
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 
@@ -246,15 +247,16 @@ class StudentDashboard extends StatelessWidget {
 
   Widget _buildPerformanceOverview() {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 15,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
@@ -264,41 +266,73 @@ class StudentDashboard extends StatelessWidget {
           const Text(
             'Class Performance',
             style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 16),
           SizedBox(
-            height: 200,
+            height: 240,
             child: BarChart(
               BarChartData(
                 alignment: BarChartAlignment.spaceAround,
                 maxY: 100,
-                barTouchData: BarTouchData(enabled: true),
+                barTouchData: BarTouchData(
+                  enabled: true,
+                  touchTooltipData: BarTouchTooltipData(
+                    // tooltipBgColor: Colors.black87,
+                    getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                      return BarTooltipItem(
+                        '${rod.toY.toInt()}%',
+                        const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
+                  ),
+                ),
                 titlesData: FlTitlesData(
                   show: true,
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
+                      reservedSize: 42,
                       getTitlesWidget: (value, meta) {
-                        const subjects = ['Math', 'Sci', 'Eng', 'Hist', 'Art'];
-                        return Text(
-                          subjects[value.toInt()],
-                          style: const TextStyle(fontSize: 12),
+                        const subjects = [
+                          'Soft Skills',
+                          'Speaking',
+                          'English',
+                          'Typing'
+                        ];
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            subjects[value.toInt()],
+                            style: const TextStyle(fontSize: 12),
+                            textAlign: TextAlign.center,
+                          ),
                         );
                       },
                     ),
+                  ),
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  rightTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
                   ),
                 ),
                 gridData: FlGridData(show: false),
                 borderData: FlBorderData(show: false),
                 barGroups: [
-                  _buildBarGroup(0, 85),
+                  _buildBarGroup(0, 8),
                   _buildBarGroup(1, 78),
                   _buildBarGroup(2, 92),
-                  _buildBarGroup(3, 76),
-                  _buildBarGroup(4, 88),
+                  _buildBarGroup(3, 22),
                 ],
               ),
             ),
@@ -314,59 +348,75 @@ class StudentDashboard extends StatelessWidget {
       barRods: [
         BarChartRodData(
           toY: y,
-          color: MyColors.red,
-          width: 20,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          gradient: LinearGradient(
+            colors: [
+              MyColors.red.withOpacity(0.9),
+              MyColors.red.withOpacity(0.5)
+            ],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+          ),
+          width: 22,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
         ),
       ],
+      // showingTooltipIndicators: [0],
     );
   }
 
   Widget _buildStudentsList() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'All Students',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+    final UsersController usersController = Get.find<UsersController>();
+
+    return Obx(() {
+      // Access the reactive users list inside Obx
+      final userData = usersController.usersModel.value.users ?? [];
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'All Students',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            TextButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.sort),
-              label: const Text('Sort by'),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return _buildStudentCard(
-              name: 'Student ${index + 1}',
-              grade: '${90 - index}.$index%',
-              subjects: ['Math', 'Science', 'English'],
-              trend:
-                  index % 3 == 0 ? 'up' : (index % 3 == 1 ? 'down' : 'stable'),
-            );
-          },
-        ),
-      ],
-    );
+              TextButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.sort),
+                label: const Text('Sort by'),
+              ),
+            ],
+          ),
+          ListView.builder(
+            padding: EdgeInsets.all(0),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: userData
+                .length, // No need for null check here since we default to empty list
+            itemBuilder: (context, index) {
+              var student = userData[index];
+
+              return _buildStudentCard(
+                name: '${student.firstName} ${student.lastName}',
+                grade: '${student.coursePercentage}%',
+                subjects: student.course ?? 'N/A',
+                // Default to 'flat' if null
+              );
+            },
+          ),
+        ],
+      );
+    });
   }
 
   Widget _buildStudentCard({
     required String name,
     required String grade,
-    required List<String> subjects,
-    required String trend,
+    required String subjects,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -409,7 +459,7 @@ class StudentDashboard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  subjects.join(' • '),
+                  subjects,
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 12,
@@ -427,32 +477,6 @@ class StudentDashboard extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
-              ),
-              const SizedBox(height: 4),
-              Row(
-                children: [
-                  Icon(
-                    trend == 'up'
-                        ? Icons.trending_up
-                        : (trend == 'down'
-                            ? Icons.trending_down
-                            : Icons.trending_flat),
-                    color: trend == 'up'
-                        ? Colors.green
-                        : (trend == 'down' ? Colors.red : Colors.grey),
-                    size: 16,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    '${trend == 'up' ? '+' : (trend == 'down' ? '-' : '')}2.3%',
-                    style: TextStyle(
-                      color: trend == 'up'
-                          ? Colors.green
-                          : (trend == 'down' ? Colors.red : Colors.grey),
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
               ),
             ],
           ),
