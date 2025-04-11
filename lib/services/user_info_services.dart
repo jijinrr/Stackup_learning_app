@@ -18,11 +18,11 @@ class UserInfoServices {
       if (response.statusCode == 200 && response.data != null) {
         return UserInfoModel.fromJson(response.data);
       } else {
-        print('Failed to fetch UserInfoServices: ${response.statusMessage}');
+        log('Failed to fetch UserInfoServices: ${response.statusMessage}');
         return null;
       }
     } catch (e) {
-      print('Error fetching UserInfoServices: $e');
+      log('Error fetching UserInfoServices: $e');
       return null;
     }
   }

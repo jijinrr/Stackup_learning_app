@@ -3,6 +3,7 @@ import 'package:stackup/View/edit_profile/controller/edit_profile_controller.dar
 import 'package:stackup/View/home/controller/home_controller.dart';
 import 'package:stackup/controller/auth_controller.dart';
 import 'package:stackup/controller/bottom_nav_controller.dart';
+import 'package:stackup/View/course_screen/controller/courses_controller.dart';
 import 'package:stackup/controller/user_info_controller.dart';
 import 'package:stackup/controller/user_location_controller.dart';
 import 'package:stackup/controller/users_controller.dart';
@@ -18,6 +19,7 @@ class StoreBinding implements Bindings {
     Get.lazyPut(() => BottomNavController(), fenix: true);
     Get.lazyPut(() => UsersController(), fenix: true);
     Get.lazyPut(() => UserInfoController(), fenix: true);
+    Get.lazyPut(() => CoursesController(), fenix: true);
     Get.lazyPut(() => UserLocationController('192.168.72.107'), fenix: true);
   }
 }

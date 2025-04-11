@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stackup/View/edit_profile/edit_profile_screen.dart';
+import 'package:stackup/controller/user_info_controller.dart';
 import 'package:stackup/helper/my_colors.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -12,8 +13,8 @@ class ProfileScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           buildSliverAppBar(), // Uncommented and using the defined method name
-          _buildProfileStats(),
-          _buildActionButtons(),
+          // _buildProfileStats(),
+          buildActionButtons(),
           SliverToBoxAdapter(
             // Wrap _buildProfileSections in SliverToBoxAdapter
             child: _buildProfileSections(),
@@ -24,6 +25,11 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget buildSliverAppBar() {
+    final UserInfoController userInfoController =
+        Get.find<UserInfoController>();
+    var userInfo = userInfoController.userInfoModel.value.users;
+
+    var userName = '${userInfo?.firstName} ${userInfo?.lastName}';
     return SliverAppBar(
       leading: IconButton(
           onPressed: () {
@@ -85,9 +91,9 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'John Doe',
+                  SizedBox(height: 12),
+                  Text(
+                    userName,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 28,
@@ -102,7 +108,7 @@ class ProfileScreen extends StatelessWidget {
                           color: Colors.white.withOpacity(0.8), size: 16),
                       const SizedBox(width: 4),
                       Text(
-                        'New York, USA',
+                        userInfo?.place ?? '',
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.8),
                           fontSize: 16,
@@ -119,26 +125,26 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileStats() {
-    return SliverToBoxAdapter(
-      // Wrap in SliverToBoxAdapter since it contains a Row (RenderBox)
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _buildStatItem('Courses', '12'),
-            _buildDivider(),
-            _buildStatItem('Following', '256'),
-            _buildDivider(),
-            _buildStatItem('Followers', '1.2K'),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildProfileStats() {
+  //   return SliverToBoxAdapter(
+  //     // Wrap in SliverToBoxAdapter since it contains a Row (RenderBox)
+  //     child: Container(
+  //       padding: const EdgeInsets.symmetric(vertical: 20),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //         children: [
+  //           _buildStatItem('Courses', '12'),
+  //           _buildDivider(),
+  //           _buildStatItem('Following', '256'),
+  //           _buildDivider(),
+  //           _buildStatItem('Followers', '1.2K'),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Widget _buildStatItem(String label, String value) {
+  Widget buildStatItem(String label, String value) {
     return Column(
       children: [
         Text(
@@ -160,7 +166,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDivider() {
+  Widget buildDivider() {
     return Container(
       height: 30,
       width: 1,
@@ -168,11 +174,11 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons() {
+  Widget buildActionButtons() {
     return SliverToBoxAdapter(
       // Wrap in SliverToBoxAdapter since it contains a Row (RenderBox)
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Row(
           children: [
             Expanded(
@@ -222,7 +228,7 @@ class ProfileScreen extends StatelessWidget {
         children: [
           _buildSectionTitle('About Me'),
           const SizedBox(height: 12),
-          _buildAboutMe(),
+          buildAboutMe(),
           const SizedBox(height: 24),
           _buildSectionTitle('My Achievements'),
           const SizedBox(height: 12),
@@ -255,9 +261,12 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAboutMe() {
+  Widget buildAboutMe() {
+    final UserInfoController userInfoController =
+        Get.find<UserInfoController>();
+    var userInfo = userInfoController.userInfoModel.value.users;
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -265,13 +274,12 @@ class ProfileScreen extends StatelessWidget {
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
             blurRadius: 10,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
       ),
-      child: const Text(
-        'Passionate learner and tech enthusiast with a focus on mobile development. '
-        'Always eager to learn new technologies and share knowledge with others.',
+      child: Text(
+        userInfo?.bio ?? '',
         style: TextStyle(
           fontSize: 16,
           color: Colors.black87,

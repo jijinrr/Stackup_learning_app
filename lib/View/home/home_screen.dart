@@ -21,7 +21,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var userInfo = userInfoController.userInfoModel.value.users;
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.grey[100],
@@ -38,6 +37,12 @@ class HomeScreen extends StatelessWidget {
                 expandedHeight: 100.0,
                 backgroundColor: MyColors.red,
                 elevation: 0,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                ),
                 leading: IconButton(
                   onPressed: () => _scaffoldKey.currentState?.openDrawer(),
                   icon: Icon(TablerIcons.menu_deep, color: Colors.white),
@@ -55,35 +60,37 @@ class HomeScreen extends StatelessWidget {
                   expandedTitleScale: 1.1,
                   titlePadding:
                       const EdgeInsets.symmetric(horizontal: 60, vertical: 16),
-                  title: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${homeController.getGreeting()}, ',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        userInfo?.firstName ?? '',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                  title: Obx(() {
+                    var userInfo = userInfoController.userInfoModel.value.users;
+
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${homeController.getGreeting()}, ',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
                         ),
-                      ),
-                      const SizedBox(width: 5),
-                      Transform(
-                        alignment: Alignment.center,
-                        transform: Matrix4.rotationY(math.pi),
-                        child: const Text(
-                          '\u{1F44B}',
-                          style: TextStyle(fontSize: 30),
+                        Text(userInfo?.firstName ?? '',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            )),
+                        const SizedBox(width: 5),
+                        Transform(
+                          alignment: Alignment.center,
+                          transform: Matrix4.rotationY(math.pi),
+                          child: const Text(
+                            '\u{1F44B}',
+                            style: TextStyle(fontSize: 28),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    );
+                  }),
                 ),
               ),
               SliverToBoxAdapter(
@@ -136,7 +143,7 @@ class HomeScreen extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: MyColors.white,
         ),
       ),
     );
@@ -172,7 +179,7 @@ class HomeScreen extends StatelessWidget {
                       margin: const EdgeInsets.symmetric(horizontal: 5),
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: MyColors.white,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Column(

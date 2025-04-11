@@ -41,6 +41,9 @@ class StudentDashboard extends StatelessWidget {
   }
 
   Widget _buildAppBar() {
+    final UsersController usersController = Get.find<UsersController>();
+    var totalStudents = usersController.usersModel.value.users?.length;
+
     return SliverAppBar(
       expandedHeight: 140,
       pinned: true,
@@ -87,7 +90,7 @@ class StudentDashboard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildStatCard('Total Students', '256'),
+              _buildStatCard('Total Students', '$totalStudents'),
               _buildStatCard('Average Score', '78.5'),
               _buildStatCard('Pass Rate', '92%'),
             ],

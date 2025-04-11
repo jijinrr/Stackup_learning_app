@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:get/get.dart';
+import 'package:stackup/View/course_screen/courses_screen.dart';
 import 'package:stackup/controller/auth_controller.dart';
+import 'package:stackup/controller/user_info_controller.dart';
 import 'package:stackup/controller/users_controller.dart';
 import 'package:stackup/helper/my_colors.dart';
 import 'package:stackup/routes/app_routes.dart';
@@ -29,7 +31,7 @@ class DrawerScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            _buildHeader(),
+            buildHeader(),
             // const SizedBox(height: 8),
             // _buildSearchBar(),
             Expanded(
@@ -63,11 +65,13 @@ class DrawerScreen extends StatelessWidget {
                     },
                   ),
                   _buildAnimatedDrawerItem(
-                    context: context,
-                    icon: Icons.school_rounded,
-                    title: 'My Courses',
-                    badge: 'New',
-                  ),
+                      context: context,
+                      icon: Icons.school_rounded,
+                      title: 'My Courses',
+                      badge: 'New',
+                      onTap: () {
+                        Get.to(CoursesScreen());
+                      }),
                   _buildAnimatedDrawerItem(
                     context: context,
                     icon: Icons.diamond_rounded,
@@ -112,7 +116,11 @@ class DrawerScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget buildHeader() {
+    final UserInfoController userInfoController =
+        Get.find<UserInfoController>();
+
+    var userInfo = userInfoController.userInfoModel.value.users;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
@@ -144,7 +152,7 @@ class DrawerScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   radius: 45,
                   backgroundColor: Colors.white,
                   backgroundImage: NetworkImage(
@@ -170,8 +178,8 @@ class DrawerScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          const Text(
-            'John Doe',
+          Text(
+            '${userInfo?.firstName} ${userInfo?.lastName}',
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,
