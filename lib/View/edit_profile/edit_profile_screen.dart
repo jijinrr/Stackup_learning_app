@@ -112,29 +112,29 @@ class EditProfileScreen extends StatelessWidget {
                                 alignment: Alignment.center,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      gradient: LinearGradient(
-                                        colors: [secondaryRed, darkRed],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: secondaryRed.withOpacity(0.5),
-                                          blurRadius: 15,
-                                          spreadRadius: 2,
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        gradient: LinearGradient(
+                                          colors: [secondaryRed, darkRed],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
                                         ),
-                                      ],
-                                    ),
-                                    child: Obx(() => CircleAvatar(
-                                          radius: 65,
-                                          backgroundColor: lightRed,
-                                          backgroundImage: NetworkImage(
-                                              controller.imageUrl.value),
-                                        )),
-                                  ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                secondaryRed.withOpacity(0.5),
+                                            blurRadius: 15,
+                                            spreadRadius: 2,
+                                          ),
+                                        ],
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 65,
+                                        backgroundColor: lightRed,
+                                        backgroundImage: NetworkImage(
+                                            userInfo?.profileUrl ?? ''),
+                                      )),
                                   Positioned(
                                     bottom: 0,
                                     right: 0,

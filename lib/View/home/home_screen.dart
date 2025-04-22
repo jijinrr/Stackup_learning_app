@@ -11,6 +11,8 @@ import 'package:stackup/controller/user_info_controller.dart';
 import 'package:stackup/helper/my_colors.dart';
 import 'dart:math' as math;
 
+import 'package:stackup/routes/app_routes.dart';
+
 class HomeScreen extends StatelessWidget {
   final AuthController authController = Get.find<AuthController>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -52,9 +54,12 @@ class HomeScreen extends StatelessWidget {
                     icon: Icon(
                       Remix.notification_2_fill,
                       color: MyColors.white,
+                      size: 30,
                     ),
-                    onPressed: () {},
-                  ),
+                    onPressed: () {
+                      Get.toNamed(RouteNames.notificationScreen);
+                    },
+                  )
                 ],
                 flexibleSpace: FlexibleSpaceBar(
                   expandedTitleScale: 1.1,
@@ -199,19 +204,19 @@ class HomeScreen extends StatelessWidget {
                               color: Colors.grey[600],
                             ),
                           ),
-                          const SizedBox(height: 15),
+                          SizedBox(height: 15),
                           LinearProgressIndicator(
                             value: course.progress,
                             backgroundColor: Colors.grey[200],
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.deepPurple,
+                              MyColors.deepPurple,
                             ),
                           ),
                           const SizedBox(height: 10),
                           Text(
                             '${(course.progress * 100).toInt()}% Complete',
-                            style: const TextStyle(
-                              color: Colors.deepPurple,
+                            style: TextStyle(
+                              color: MyColors.deepPurple,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -266,9 +271,9 @@ class HomeScreen extends StatelessWidget {
                             color: Colors.deepPurple[50],
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.play_circle_outline,
-                            color: Colors.deepPurple,
+                            color: MyColors.deepPurple,
                             size: 30,
                           ),
                         ),

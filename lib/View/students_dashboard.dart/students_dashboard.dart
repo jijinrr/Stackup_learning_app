@@ -1,36 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
+import 'package:stackup/controller/user_info_controller.dart';
 import 'package:stackup/controller/users_controller.dart';
 import 'package:stackup/helper/my_colors.dart';
+import 'package:stackup/widgets/loading_screen.dart';
 
 class StudentDashboard extends StatelessWidget {
   const StudentDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final UsersController usersController = Get.find<UsersController>();
+
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          _buildAppBar(),
-          SliverToBoxAdapter(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildTopPerformers(),
-                    const SizedBox(height: 24),
-                    _buildPerformanceOverview(),
-                    const SizedBox(height: 24),
-                    _buildStudentsList(),
-                  ],
-                ),
+      body: Obx(
+        () => usersController.isLoading.value
+            ? LoadingScreen()
+            : CustomScrollView(
+                slivers: [
+                  _buildAppBar(),
+                  SliverToBoxAdapter(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildTopPerformers(),
+                            const SizedBox(height: 24),
+                            _buildPerformanceOverview(),
+                            const SizedBox(height: 24),
+                            _buildStudentsList(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-        ],
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {},
@@ -42,9 +50,26 @@ class StudentDashboard extends StatelessWidget {
 
   Widget _buildAppBar() {
     final UsersController usersController = Get.find<UsersController>();
-    var totalStudents = usersController.usersModel.value.users?.length;
+    var students = usersController.usersModel.value.users ?? [];
+    var totalStudents = students.length;
+
+    double totalPercentage = 0.0;
+
+    for (var student in students) {
+      var percentage =
+          double.tryParse(student.coursePercentage?.toString() ?? '0') ?? 0.0;
+      totalPercentage += percentage;
+    }
+
+    // Calculate average, protect against division by zero
+    double averageScore =
+        totalStudents > 0 ? totalPercentage / totalStudents : 0.0;
+
+    // Format to 1 decimal place
+    String averageScoreFormatted = averageScore.toStringAsFixed(1);
 
     return SliverAppBar(
+      backgroundColor: MyColors.red,
       expandedHeight: 140,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
@@ -53,35 +78,26 @@ class StudentDashboard extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                MyColors.red,
-                MyColors.red.withOpacity(0.8),
-              ],
+              colors: [MyColors.red, MyColors.red],
             ),
           ),
         ),
-        // title: const Text('Student Dashboard'),
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.search),
+          icon: Icon(Icons.search, color: MyColors.white),
           onPressed: () {},
         ),
         IconButton(
-          icon: const Icon(Icons.filter_list),
+          icon: Icon(Icons.filter_list, color: MyColors.white),
           onPressed: () {},
         ),
         const SizedBox(width: 8),
       ],
       leading: IconButton(
-          onPressed: () {
-            // Get.toNamed(RouteNames.homeScreen);
-            Get.back();
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: MyColors.white,
-          )),
+        onPressed: () => Get.back(),
+        icon: Icon(Icons.arrow_back_ios, color: MyColors.white),
+      ),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(50),
         child: Container(
@@ -91,7 +107,7 @@ class StudentDashboard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildStatCard('Total Students', '$totalStudents'),
-              _buildStatCard('Average Score', '78.5'),
+              _buildStatCard('Average Score', averageScoreFormatted),
               _buildStatCard('Pass Rate', '92%'),
             ],
           ),
@@ -131,6 +147,28 @@ class StudentDashboard extends StatelessWidget {
   }
 
   Widget _buildTopPerformers() {
+    final UsersController usersController = Get.find<UsersController>();
+    var students = usersController.usersModel.value.users ?? [];
+
+    // Sort students by coursePercentage (descending)
+    students.sort((a, b) {
+      double aScore =
+          double.tryParse(a.coursePercentage?.toString() ?? '0') ?? 0.0;
+      double bScore =
+          double.tryParse(b.coursePercentage?.toString() ?? '0') ?? 0.0;
+      return bScore.compareTo(aScore);
+    });
+
+    // Take top 3
+    final topStudents = students.take(3).toList();
+
+    // Rank colors
+    final rankColors = [
+      Colors.amber,
+      Colors.grey[400]!,
+      Colors.brown[300]!,
+    ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -144,35 +182,32 @@ class StudentDashboard extends StatelessWidget {
         const SizedBox(height: 16),
         SizedBox(
           height: 200,
-          child: ListView(
+          child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            children: [
-              _buildTopPerformerCard(
-                name: 'John Doe',
-                grade: '98.5%',
-                rank: '1st',
-                image: 'https://i.pravatar.cc/150?img=1',
-                color: Colors.amber,
-              ),
-              _buildTopPerformerCard(
-                name: 'Jane Smith',
-                grade: '97.2%',
-                rank: '2nd',
-                image: 'https://i.pravatar.cc/150?img=2',
-                color: Colors.grey[400]!,
-              ),
-              _buildTopPerformerCard(
-                name: 'Mike Johnson',
-                grade: '96.8%',
-                rank: '3rd',
-                image: 'https://i.pravatar.cc/150?img=3',
-                color: Colors.brown[300]!,
-              ),
-            ],
+            itemCount: topStudents.length,
+            itemBuilder: (context, index) {
+              final student = topStudents[index];
+              final rank = "${index + 1}${_rankSuffix(index + 1)}";
+
+              return _buildTopPerformerCard(
+                name: student.firstName ?? 'Unknown',
+                grade: '${student.coursePercentage ?? '0.0'}%',
+                rank: rank,
+                image: student.profileUrl ?? '',
+                color: rankColors[index],
+              );
+            },
           ),
         ),
       ],
     );
+  }
+
+  String _rankSuffix(int number) {
+    if (number == 1) return 'st';
+    if (number == 2) return 'nd';
+    if (number == 3) return 'rd';
+    return 'th';
   }
 
   Widget _buildTopPerformerCard({
@@ -249,6 +284,14 @@ class StudentDashboard extends StatelessWidget {
   }
 
   Widget _buildPerformanceOverview() {
+    final UserInfoController userInfoController =
+        Get.find<UserInfoController>();
+    final user = userInfoController.userInfoModel.value.users;
+
+    if (user == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       padding: const EdgeInsets.all(16),
@@ -275,7 +318,7 @@ class StudentDashboard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           SizedBox(
-            height: 240,
+            height: 300,
             child: BarChart(
               BarChartData(
                 alignment: BarChartAlignment.spaceAround,
@@ -320,22 +363,33 @@ class StudentDashboard extends StatelessWidget {
                     ),
                   ),
                   leftTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 40,
+                      getTitlesWidget: (value, meta) {
+                        return Text(
+                          '${value.toInt()}%',
+                          style: const TextStyle(fontSize: 12),
+                        );
+                      },
+                    ),
                   ),
-                  rightTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                  topTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
+                  rightTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 ),
                 gridData: FlGridData(show: false),
                 borderData: FlBorderData(show: false),
                 barGroups: [
-                  _buildBarGroup(0, 8),
-                  _buildBarGroup(1, 78),
-                  _buildBarGroup(2, 92),
-                  _buildBarGroup(3, 22),
+                  _buildBarGroup(
+                      0, user.softSkillPercentage?.toInt() ?? 0, Colors.blue),
+                  _buildBarGroup(
+                      1, user.speakingPercentage?.toInt() ?? 0, Colors.green),
+                  _buildBarGroup(
+                      2, user.englishPercentage?.toInt() ?? 0, Colors.orange),
+                  _buildBarGroup(
+                      3, user.typingPercentage?.toInt() ?? 0, Colors.red),
                 ],
               ),
             ),
@@ -345,25 +399,17 @@ class StudentDashboard extends StatelessWidget {
     );
   }
 
-  BarChartGroupData _buildBarGroup(int x, double y) {
+  BarChartGroupData _buildBarGroup(int x, int y, Color color) {
     return BarChartGroupData(
       x: x,
       barRods: [
         BarChartRodData(
-          toY: y,
-          gradient: LinearGradient(
-            colors: [
-              MyColors.red.withOpacity(0.9),
-              MyColors.red.withOpacity(0.5)
-            ],
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-          ),
-          width: 22,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
+          toY: y.toDouble(),
+          color: color,
+          width: 16,
+          borderRadius: BorderRadius.circular(4),
         ),
       ],
-      // showingTooltipIndicators: [0],
     );
   }
 

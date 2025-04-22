@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:get/get.dart';
+import 'package:stackup/View/attendance_screen/attendance_screen.dart';
 import 'package:stackup/View/course_screen/courses_screen.dart';
 import 'package:stackup/controller/auth_controller.dart';
 import 'package:stackup/controller/user_info_controller.dart';
 import 'package:stackup/controller/users_controller.dart';
 import 'package:stackup/helper/my_colors.dart';
 import 'package:stackup/routes/app_routes.dart';
+import 'package:stackup/widgets/custom_confirmation_dialouge.dart';
 
 class DrawerScreen extends StatelessWidget {
   const DrawerScreen({super.key});
@@ -74,9 +76,12 @@ class DrawerScreen extends StatelessWidget {
                       }),
                   _buildAnimatedDrawerItem(
                     context: context,
-                    icon: Icons.diamond_rounded,
-                    title: 'Premium',
-                    iconColor: Colors.amber,
+                    icon: Icons.line_axis,
+                    title: 'Attendence',
+                    onTap: () {
+                      Get.to(AttendanceScreen());
+                    },
+                    // iconColor: Colors.amber,
                   ),
                   const Divider(height: 32),
                   _buildSectionTitle('Personal'),
@@ -90,10 +95,13 @@ class DrawerScreen extends StatelessWidget {
                     },
                   ),
                   _buildAnimatedDrawerItem(
-                    context: context,
-                    icon: Icons.settings_rounded,
-                    title: 'Settings',
-                  ),
+                      context: context,
+                      icon: Icons.settings_rounded,
+                      title: 'Settings',
+                      onTap: () {
+                        Get.back();
+                        Get.toNamed(RouteNames.settingsScreen);
+                      }),
                   const Divider(height: 32),
                   _buildSectionTitle('Support'),
                   _buildAnimatedDrawerItem(
@@ -109,7 +117,7 @@ class DrawerScreen extends StatelessWidget {
                 ],
               ),
             ),
-            _buildBottomSection(),
+            _buildBottomSection(context),
           ],
         ),
       ),
@@ -156,7 +164,7 @@ class DrawerScreen extends StatelessWidget {
                   radius: 45,
                   backgroundColor: Colors.white,
                   backgroundImage: NetworkImage(
-                    'https://static.vecteezy.com/system/resources/thumbnails/035/544/575/small_2x/ai-generated-cheerful-black-man-looking-at-camera-isolated-on-transparent-background-african-american-male-person-portrait-png.png',
+                    userInfo?.profileUrl ?? '',
                   ),
                 ),
               ),
@@ -327,11 +335,31 @@ class DrawerScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomSection() {
+  Widget _buildBottomSection(BuildContext context) {
     final AuthController authController = Get.find<AuthController>();
 
     return GestureDetector(
-      onTap: () => authController.signOut(),
+      onTap: () {
+        Get.back();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomConfirmationDialouge(
+              title: 'Logout',
+              message: 'Are you sure you want to logout?',
+              confirmText: 'Logout',
+              cancelText: 'Cancel',
+              onConfirm: () {
+                authController.signOut();
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              onCancel: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            );
+          },
+        );
+      },
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -391,4 +419,73 @@ class DrawerScreen extends StatelessWidget {
       ),
     );
   }
+
+  // Widget _buildBottomSection() {
+  //   final AuthController authController = Get.find<AuthController>();
+
+  //   return GestureDetector(
+  //     onTap: () {
+  //       CustomConfirmationDialouge(
+  //           message: '', onCancel: () {}, title: '', onConfirm: () {});
+  //     },
+  // onTap: () => authController.signOut(),
+  //     child: Container(
+  //       padding: const EdgeInsets.all(16),
+  //       decoration: BoxDecoration(
+  //         color: Colors.white,
+  //         boxShadow: [
+  //           BoxShadow(
+  //             color: Colors.grey.withOpacity(0.1),
+  //             blurRadius: 10,
+  //             offset: const Offset(0, -5),
+  //           ),
+  //         ],
+  //       ),
+  //       child: Row(
+  //         children: [
+  //           Container(
+  //             padding: const EdgeInsets.all(8),
+  //             decoration: BoxDecoration(
+  //               color: MyColors.red.withOpacity(0.1),
+  //               shape: BoxShape.circle,
+  //             ),
+  //             child: Icon(
+  //               Icons.logout_rounded,
+  //               color: MyColors.red,
+  //               size: 20,
+  //             ),
+  //           ),
+  //           const SizedBox(width: 12),
+  //           const Expanded(
+  //             child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: [
+  //                 Text(
+  //                   'Logout',
+  //                   style: TextStyle(
+  //                     fontSize: 16,
+  //                     fontWeight: FontWeight.bold,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   'See you soon!',
+  //                   style: TextStyle(
+  //                     fontSize: 12,
+  //                     color: Colors.grey,
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //           Icon(
+  //             Icons.arrow_forward_ios_rounded,
+  //             color: Colors.grey[400],
+  //             size: 16,
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }

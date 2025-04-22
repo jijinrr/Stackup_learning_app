@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:stackup/View/attendance_screen/controller/attendance_controller.dart';
 import 'package:stackup/View/edit_profile/controller/edit_profile_controller.dart';
 import 'package:stackup/View/home/controller/home_controller.dart';
 import 'package:stackup/controller/auth_controller.dart';
@@ -20,6 +21,7 @@ class StoreBinding implements Bindings {
     Get.lazyPut(() => UsersController(), fenix: true);
     Get.lazyPut(() => UserInfoController(), fenix: true);
     Get.lazyPut(() => CoursesController(), fenix: true);
+    Get.lazyPut(() => AttendanceController(), fenix: true);
     Get.lazyPut(() => UserLocationController('192.168.72.107'), fenix: true);
   }
 }

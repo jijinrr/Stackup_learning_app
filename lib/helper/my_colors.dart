@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class MyColors {
-  static Color primaryColor = const Color(0xff28323A);
+  static Color primaryColor = const Color(0xffFF3D49);
   static Color secondaryColor = Colors.black;
   static Color background = Colors.black;
   static Color black = Colors.black;
+  static Color deepPurple = Colors.deepPurple;
   static Color boxColor = const Color(0xff23292E);
   static Color boxColor1 = const Color(0xff1D1F21);
+  static const Color darkGrey = Color(0xFF757575);
 
   // login page
   static Color logintxtfrom = const Color(0xff767272);

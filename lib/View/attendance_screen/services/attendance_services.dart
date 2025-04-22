@@ -1,23 +1,23 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:stackup/View/attendance_screen/model/attendance_model.dart';
 import 'package:stackup/dio_interceptor/dio_interceptor.dart';
-import 'package:stackup/model/user_info_model.dart';
 
-class UserInfoServices {
+class AttendanceServices {
   static final Dio _dio = ApiClient.getDio();
 
-  Future<UserInfoModel?> fetchUserInfoService() async {
+  Future<AttendanceModel?> fetchAttendanceService() async {
     try {
-      final response = await _dio.get('http://localhost:8000/api/user/userInfo',
-          data: {
-            "email": "john.smith@example.com"
-          }); // Android emulator localhost
+      final response = await _dio
+          .get('http://localhost:8000/api/user/getAllAttendance', data: {
+        "email": "john.smith@example.com"
+      }); // Android emulator localhost
 
       // log(response.data.toString());
 
       if (response.statusCode == 200 && response.data != null) {
-        // print("======  UserInfoServices Succesfully =======");
-        return UserInfoModel.fromJson(response.data);
+        log("======  AttendanceServices Succesfully =======");
+        return AttendanceModel.fromJson(response.data);
       } else {
         log('Failed to fetch UserInfoServices: ${response.statusMessage}');
         return null;
