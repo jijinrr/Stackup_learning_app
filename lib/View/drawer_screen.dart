@@ -3,6 +3,7 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:get/get.dart';
 import 'package:stackup/View/attendance_screen/attendance_screen.dart';
 import 'package:stackup/View/course_screen/courses_screen.dart';
+import 'package:stackup/View/explore/explore_screen.dart';
 import 'package:stackup/controller/auth_controller.dart';
 import 'package:stackup/controller/user_info_controller.dart';
 import 'package:stackup/controller/users_controller.dart';
@@ -49,10 +50,18 @@ class DrawerScreen extends StatelessWidget {
                     badge: '3',
                   ),
                   _buildAnimatedDrawerItem(
-                    context: context,
-                    icon: Icons.explore_rounded,
-                    title: 'Explore',
-                  ),
+                      context: context,
+                      icon: Icons.explore_rounded,
+                      title: 'Explore',
+                      onTap: () {
+                        Get.back();
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AppWebView(
+                            webUrl: 'https://stackup.dev',
+                            title: 'Explore',
+                          ),
+                        ));
+                      }),
                   _buildAnimatedDrawerItem(
                     context: context,
                     icon: TablerIcons.chart_bar,
@@ -67,14 +76,6 @@ class DrawerScreen extends StatelessWidget {
                     },
                   ),
                   _buildAnimatedDrawerItem(
-                      context: context,
-                      icon: Icons.school_rounded,
-                      title: 'My Courses',
-                      badge: 'New',
-                      onTap: () {
-                        Get.to(CoursesScreen());
-                      }),
-                  _buildAnimatedDrawerItem(
                     context: context,
                     icon: Icons.line_axis,
                     title: 'Attendence',
@@ -83,6 +84,14 @@ class DrawerScreen extends StatelessWidget {
                     },
                     // iconColor: Colors.amber,
                   ),
+                  _buildAnimatedDrawerItem(
+                      context: context,
+                      icon: Icons.school_rounded,
+                      title: 'My Courses',
+                      badge: 'New',
+                      onTap: () {
+                        Get.to(CoursesScreen());
+                      }),
                   const Divider(height: 32),
                   _buildSectionTitle('Personal'),
                   _buildAnimatedDrawerItem(
@@ -92,6 +101,7 @@ class DrawerScreen extends StatelessWidget {
                     onTap: () {
                       closeDrawer();
                       Get.toNamed(RouteNames.profileScreen);
+                      // Get.to(Themescreen());
                     },
                   ),
                   _buildAnimatedDrawerItem(

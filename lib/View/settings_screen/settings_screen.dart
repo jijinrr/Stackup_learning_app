@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stackup/controller/theme_controller.dart';
 import 'package:stackup/helper/my_colors.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -11,26 +12,34 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
-  bool _darkMode = false;
   bool _downloadOverWifi = true;
   double _textSize = 16.0;
   String _selectedLanguage = 'English';
 
   @override
   Widget build(BuildContext context) {
+    final ThemeController themeController = Get.find<ThemeController>();
+
     return Scaffold(
-      backgroundColor: MyColors.white,
+      backgroundColor:
+          Theme.of(context).scaffoldBackgroundColor, // Use theme background
       appBar: AppBar(
-        backgroundColor: MyColors.red,
+        centerTitle: false,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         title: Text(
           'Settings',
-          style: TextStyle(color: MyColors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Theme.of(context).appBarTheme.foregroundColor,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: MyColors.white),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).appBarTheme.foregroundColor,
+          ),
           onPressed: () {
             Get.back();
-            // Navigate back
           },
         ),
       ),
@@ -42,47 +51,47 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _buildSettingItem(
                 'Profile Information',
                 Icons.person,
-                trailing: const Icon(Icons.chevron_right, color: Colors.red),
+                trailing: Icon(Icons.chevron_right, color: MyColors.grey),
                 onTap: () {},
               ),
               _buildSettingItem(
                 'Change Password',
                 Icons.lock,
-                trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+                trailing: Icon(Icons.chevron_right, color: MyColors.grey),
                 onTap: () {},
               ),
               _buildSettingItem(
                 'Linked Accounts',
                 Icons.link,
-                trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+                trailing: Icon(Icons.chevron_right, color: MyColors.grey),
                 onTap: () {},
               ),
             ]),
-            const Divider(height: 1, thickness: 1),
+            Divider(height: 1, thickness: 1, color: MyColors.lightgreyline),
             _buildSettingsSection('Learning Preferences', [
               _buildSettingItem(
                 'Subject Interests',
                 Icons.category,
-                trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+                trailing: Icon(Icons.chevron_right, color: MyColors.grey),
                 onTap: () {},
               ),
               _buildSettingItem(
                 'Learning Schedule',
                 Icons.calendar_today,
-                trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+                trailing: Icon(Icons.chevron_right, color: MyColors.grey),
                 onTap: () {},
               ),
               _buildSettingItem(
                 'Difficulty Level',
                 Icons.bar_chart,
-                trailing: const Text(
+                trailing: Text(
                   'Intermediate',
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: MyColors.grey),
                 ),
                 onTap: () {},
               ),
             ]),
-            const Divider(height: 1, thickness: 1),
+            Divider(height: 1, thickness: 1, color: MyColors.lightgreyline),
             _buildSettingsSection('App Settings', [
               _buildSettingItem(
                 'Notifications',
@@ -94,19 +103,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _notificationsEnabled = value;
                     });
                   },
+                  activeColor: MyColors.primaryColor,
                 ),
               ),
               _buildSettingItem(
                 'Dark Mode',
                 Icons.dark_mode,
-                trailing: Switch(
-                  value: _darkMode,
-                  onChanged: (value) {
-                    setState(() {
-                      _darkMode = value;
-                    });
-                  },
-                ),
+                trailing: Obx(() => Switch(
+                      value: themeController.isDarkMode.value,
+                      onChanged: (value) {
+                        themeController.toggleTheme();
+                      },
+                      activeColor: MyColors.primaryColor,
+                    )),
               ),
               _buildSettingItem(
                 'Download over Wi-Fi only',
@@ -118,13 +127,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _downloadOverWifi = value;
                     });
                   },
+                  activeColor: MyColors.primaryColor,
                 ),
               ),
               _buildSettingItem(
                 'Text Size',
                 Icons.text_fields,
                 subtitle: Slider(
-                  activeColor: MyColors.red,
+                  activeColor: MyColors.primaryColor,
                   value: _textSize,
                   min: 12.0,
                   max: 24.0,
@@ -152,7 +162,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(
+                        value,
+                        style: TextStyle(
+                            color:
+                                Theme.of(context).textTheme.bodyLarge?.color),
+                      ),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
@@ -165,30 +180,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
             ]),
-            const Divider(height: 1, thickness: 1),
+            Divider(height: 1, thickness: 1, color: MyColors.lightgreyline),
             _buildSettingsSection('Support', [
               _buildSettingItem(
                 'Help Center',
                 Icons.help,
-                trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+                trailing: Icon(Icons.chevron_right, color: MyColors.grey),
                 onTap: () {},
               ),
               _buildSettingItem(
                 'Report a Bug',
                 Icons.bug_report,
-                trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+                trailing: Icon(Icons.chevron_right, color: MyColors.grey),
                 onTap: () {},
               ),
               _buildSettingItem(
                 'Privacy Policy',
                 Icons.privacy_tip,
-                trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+                trailing: Icon(Icons.chevron_right, color: MyColors.grey),
                 onTap: () {},
               ),
               _buildSettingItem(
                 'Terms of Service',
                 Icons.description,
-                trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+                trailing: Icon(Icons.chevron_right, color: MyColors.grey),
                 onTap: () {},
               ),
             ]),
@@ -203,7 +218,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Center(
               child: Text(
                 'App Version 1.0.3',
-                style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                style: TextStyle(
+                  color: Get.isDarkMode ? MyColors.neutralGray : MyColors.grey,
+                  fontSize: 12,
+                ),
               ),
             ),
             const SizedBox(height: 40),
@@ -224,7 +242,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: MyColors.red,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
         ),
@@ -248,10 +266,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             Row(
               children: [
-                Icon(icon, color: MyColors.red),
+                Icon(
+                  icon,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: Text(title, style: const TextStyle(fontSize: 16)),
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ),
+                  ),
                 ),
                 if (trailing != null) trailing,
               ],

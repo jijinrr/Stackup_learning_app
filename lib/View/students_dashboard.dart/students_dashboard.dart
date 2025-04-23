@@ -69,8 +69,14 @@ class StudentDashboard extends StatelessWidget {
     String averageScoreFormatted = averageScore.toStringAsFixed(1);
 
     return SliverAppBar(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
+      ),
       backgroundColor: MyColors.red,
-      expandedHeight: 140,
+      expandedHeight: 150,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
@@ -81,6 +87,13 @@ class StudentDashboard extends StatelessWidget {
               colors: [MyColors.red, MyColors.red],
             ),
           ),
+        ),
+      ),
+      title: Text(
+        'Dashboard',
+        style: TextStyle(
+          color: MyColors.white,
+          fontWeight: FontWeight.bold,
         ),
       ),
       actions: [
@@ -318,7 +331,7 @@ class StudentDashboard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           SizedBox(
-            height: 300,
+            height: 250,
             child: BarChart(
               BarChartData(
                 alignment: BarChartAlignment.spaceAround,

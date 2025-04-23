@@ -4,10 +4,12 @@ import 'package:stackup/services/courses_services.dart';
 
 class CoursesController extends GetxController {
   RxInt selectIndex = 0.obs;
+  RxInt selectLevelIndex = 0.obs;
+
   RxString selecteCourse = ''.obs;
   var coursesModel = CoursesModel().obs;
   var isLoading = false.obs;
-  var courseList = ['Flutter', 'mean', 'ui/Ux'];
+  var courseList = ['Flutter', 'Mean', 'Ui/Ux'];
 
   @override
   void onInit() {

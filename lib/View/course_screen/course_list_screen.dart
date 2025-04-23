@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stackup/View/course_screen/controller/courses_controller.dart';
-import 'package:stackup/View/course_screen/level_screen.dart';
+import 'package:stackup/View/course_screen/detail_level_screen.dart';
 import 'package:stackup/helper/my_colors.dart';
+import 'package:stackup/widgets/custom_appbar.dart';
 import 'package:stackup/widgets/loading_screen.dart';
 
 class CourseListScreen extends StatelessWidget {
@@ -13,18 +14,24 @@ class CourseListScreen extends StatelessWidget {
     final CoursesController coursesController = Get.find<CoursesController>();
 
     var course = coursesController.coursesModel.value.courses?.first.courses;
-    var levelList =
-        course?[coursesController.selectIndex.value].flutter?.levels;
+    var levelList;
+
+    if (coursesController.selecteCourse.value == 'Flutter') {
+      levelList = course?[coursesController.selectIndex.value].flutter?.levels;
+    } else if (coursesController.selecteCourse.value == 'Mean') {
+      levelList = course?[coursesController.selectIndex.value].mean?.levels;
+    } else {
+      levelList = course?[coursesController.selectIndex.value].uiUx?.levels;
+    }
 
     return Scaffold(
       backgroundColor: MyColors.white.withOpacity(0.9),
-      appBar: AppBar(
-        backgroundColor: MyColors.red,
-        title: Text(
-          coursesController.selecteCourse.value,
-          style: TextStyle(color: MyColors.white),
-        ),
-        elevation: 0,
+      appBar: CustomAppBar(
+        title: coursesController.selecteCourse.value,
+        notification: false,
+        leadingOnPressed: () {
+          Get.back();
+        },
       ),
       body: coursesController.isLoading.value
           ? LoadingScreen()
@@ -39,7 +46,8 @@ class CourseListScreen extends StatelessWidget {
                   onTap: () {
                     // print(levelList);
                     // print(courseNames?.flutter.levels);
-                    Get.to(LevelScreen());
+                    Get.to(DetailLevelScreen());
+                    coursesController.selectLevelIndex.value = index;
                   },
                   child: Card(
                     color: MyColors.white,
@@ -94,10 +102,10 @@ class CourseListScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 16),
                           LinearProgressIndicator(
-                            value: 8,
+                            value: 0.2,
                             backgroundColor: Colors.grey.shade200,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.red),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                MyColors.deepPurple),
                           ),
                           const SizedBox(height: 8),
                         ],

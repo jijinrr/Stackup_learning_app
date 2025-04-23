@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:stackup/View/course_screen/course_list_screen.dart';
 import 'package:stackup/View/course_screen/controller/courses_controller.dart';
 import 'package:stackup/helper/my_colors.dart';
+import 'package:stackup/widgets/custom_appbar.dart';
 
 class CoursesScreen extends StatelessWidget {
   const CoursesScreen({super.key});
@@ -13,13 +14,12 @@ class CoursesScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: MyColors.white,
-      appBar: AppBar(
-        backgroundColor: MyColors.red,
-        title: Text(
-          'Learning Levels',
-          style: TextStyle(color: MyColors.white),
-        ),
-        elevation: 0,
+      appBar: CustomAppBar(
+        title: "Courses",
+        notification: false,
+        leadingOnPressed: () {
+          Get.back();
+        },
       ),
       body: ListView.builder(
         itemCount: coursesController.courseList.length,
@@ -68,7 +68,7 @@ class CoursesScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.red.shade50,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.red.shade200),
+                            border: Border.all(color: Colors.red),
                           ),
                           child: Text(
                             ' level.difficulty',
@@ -91,9 +91,10 @@ class CoursesScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     LinearProgressIndicator(
-                      value: 10,
+                      value: 0.6,
                       backgroundColor: Colors.grey.shade200,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(MyColors.deepPurple),
                     ),
                     const SizedBox(height: 8),
                     Row(
