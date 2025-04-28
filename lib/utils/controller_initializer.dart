@@ -26,7 +26,6 @@ class StoreBinding implements Bindings {
     Get.lazyPut(() => AttendanceController(), fenix: true);
     Get.lazyPut(() => NotificationsController(), fenix: true);
     Get.lazyPut(() => ThemeController(), fenix: true);
-
-    Get.lazyPut(() => UserLocationController('192.168.72.107'), fenix: true);
+    Get.lazyPut(() => UserLocationController('192.168.12.146'), fenix: true);
   }
 }

@@ -6,7 +6,7 @@ class CoursesServices extends GetConnect {
   Future<CoursesModel?> fetchCoursesService() async {
     try {
       final response = await get(
-        'http://localhost:8000/api/user/courses',
+        'http://localhost:8000/api/stackup/courses',
       ); // Android emulator localhost
       // print(response.body.toString());
 

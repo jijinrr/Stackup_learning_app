@@ -9,6 +9,7 @@ import 'package:stackup/controller/user_info_controller.dart';
 import 'package:stackup/controller/users_controller.dart';
 import 'package:stackup/helper/my_colors.dart';
 import 'package:stackup/routes/app_routes.dart';
+import 'package:stackup/utils/sharedpreference.dart';
 import 'package:stackup/widgets/custom_confirmation_dialouge.dart';
 
 class DrawerScreen extends StatelessWidget {
@@ -22,16 +23,17 @@ class DrawerScreen extends StatelessWidget {
 
     return Drawer(
       child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.white,
-              Colors.grey[50]!,
-            ],
-          ),
-        ),
+        color: Theme.of(context).scaffoldBackgroundColor,
+        // decoration: BoxDecoration(
+        //   gradient: LinearGradient(
+        //     begin: Alignment.topCenter,
+        //     end: Alignment.bottomCenter,
+        //     colors: [
+        //       Colors.white,
+        //       Colors.grey[50]!,
+        //     ],
+        //   ),
+        // ),
         child: Column(
           children: [
             buildHeader(),
@@ -174,7 +176,8 @@ class DrawerScreen extends StatelessWidget {
                   radius: 45,
                   backgroundColor: Colors.white,
                   backgroundImage: NetworkImage(
-                    userInfo?.profileUrl ?? '',
+                    userInfo?.profileUrl ??
+                        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
                   ),
                 ),
               ),
@@ -359,12 +362,13 @@ class DrawerScreen extends StatelessWidget {
               message: 'Are you sure you want to logout?',
               confirmText: 'Logout',
               cancelText: 'Cancel',
-              onConfirm: () {
+              onConfirm: () async {
                 authController.signOut();
-                Navigator.of(context).pop(); // Close the dialog
+                await SharedPrefs.clearAll();
+                Get.offAllNamed(RouteNames.loginScreen);
               },
               onCancel: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Get.back(); // Close the dialog
               },
             );
           },

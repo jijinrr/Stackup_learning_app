@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:stackup/controller/user_info_controller.dart';
 import 'package:stackup/routes/app_routes.dart';
+import 'package:stackup/utils/sharedpreference.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -18,6 +20,10 @@ class AuthController extends GetxController {
         email: email.trim(),
         password: password.trim(),
       );
+      SharedPrefs.savePlan('email', email.trim());
+      final UserInfoController userInfoController =
+          Get.find<UserInfoController>();
+      userInfoController.fetchuserInfo();
       Get.offAllNamed(RouteNames.homeScreen);
     } catch (e) {
       Get.snackbar(
@@ -36,6 +42,11 @@ class AuthController extends GetxController {
         email: email.trim(),
         password: password.trim(),
       );
+      SharedPrefs.savePlan('email', email.trim());
+// !SharedPrefs.getString('email') ?? '';
+      final UserInfoController userInfoController =
+          Get.find<UserInfoController>();
+      userInfoController.fetchuserInfo();
       Get.offAllNamed(RouteNames.homeScreen);
     } catch (e) {
       Get.snackbar(

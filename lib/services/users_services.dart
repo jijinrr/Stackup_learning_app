@@ -6,7 +6,7 @@ class UsersServices extends GetConnect {
   Future<UsersModel?> fetchUsersService() async {
     try {
       final response = await get(
-        'http://localhost:8000/api/user/usersList',
+        'http://localhost:8000/api/stackup/usersList',
       ); // Android emulator localhost
       log(response.body.toString());
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stackup/controller/theme_controller.dart';
 import 'package:stackup/helper/my_colors.dart';
+import 'package:stackup/routes/app_routes.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -52,7 +53,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 'Profile Information',
                 Icons.person,
                 trailing: Icon(Icons.chevron_right, color: MyColors.grey),
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(RouteNames.profileScreen);
+                },
               ),
               _buildSettingItem(
                 'Change Password',

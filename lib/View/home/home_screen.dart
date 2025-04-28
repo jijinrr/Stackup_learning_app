@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:stackup/View/drawer_screen.dart';
 import 'package:stackup/View/home/controller/home_controller.dart';
+import 'package:stackup/View/home/widgets/continue_learning_screen.dart';
 import 'package:stackup/View/home/widgets/user_location_checkin_widgetsd.dart';
 import 'package:stackup/controller/auth_controller.dart';
 import 'package:stackup/controller/user_info_controller.dart';
@@ -121,7 +122,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               SliverToBoxAdapter(
-                child: _buildContinueLearning(),
+                child: ContinueLearningScreen(),
               ),
               SliverToBoxAdapter(
                 child: _buildPopularCourses(),
@@ -154,7 +155,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildContinueLearning() {
+  Widget buildContinueLearning() {
     return Container(
       margin: const EdgeInsets.only(top: 30),
       child: Column(
