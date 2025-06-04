@@ -43,7 +43,7 @@ class LoginScreen extends StatelessWidget {
                   'Welcome Back!',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: MyColors.primaryColor,
                       ),
                   textAlign: TextAlign.center,
                 ),
@@ -97,7 +97,7 @@ class LoginScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    backgroundColor: MyColors.primaryColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),

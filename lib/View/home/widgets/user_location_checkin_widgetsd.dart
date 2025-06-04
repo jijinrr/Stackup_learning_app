@@ -20,7 +20,7 @@ class UserLocationScreen extends StatelessWidget {
         child: Card(
           color: MyColors.white.withOpacity(0.9),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 60),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -32,7 +32,7 @@ class UserLocationScreen extends StatelessWidget {
                 Obx(() => Text(
                     'Current IP: ${controller.currentIp.value.isEmpty ? 'Unknown' : controller.currentIp.value}',
                     style: TextStyle(color: MyColors.green))),
-                const SizedBox(height: 16),
+                const SizedBox(height: 14),
                 // Obx(() => Text(
                 //       'Check-in Time: ${controller.formatDateTime(controller.checkInTime.value)}',
                 //       style: Theme.of(context).textTheme.bodyMedium,

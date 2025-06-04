@@ -273,19 +273,19 @@ class SignUpScreen extends StatelessWidget {
                       }
                     });
 
-                    print(firstNameController.text);
-                    print(lastNameController.text);
-                    print(emailController.text);
-                    print(phoneNumberController.text);
-                    print(qualificationController.text);
-                    print(passwordController.text);
-                    print(confirmPasswordController.text);
-                    print(ageController.text);
-                    print(selectedGender);
-                    print(selectedCourseController.text);
-                    print(placeController.text);
-                    print(bioController.text);
-                    print(progressLevelController.text);
+                    // print(firstNameController.text);
+                    // print(lastNameController.text);
+                    // print(emailController.text);
+                    // print(phoneNumberController.text);
+                    // print(qualificationController.text);
+                    // print(passwordController.text);
+                    // print(confirmPasswordController.text);
+                    // print(ageController.text);
+                    // print(selectedGender);
+                    // print(selectedCourseController.text);
+                    // print(placeController.text);
+                    // print(bioController.text);
+                    // print(progressLevelController.text);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
